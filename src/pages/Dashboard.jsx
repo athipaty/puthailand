@@ -4,13 +4,17 @@ import {
   ResponsiveContainer, PieChart, Pie, Cell,
 } from 'recharts';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
 import KpiCard from '../components/KpiCard';
-import { fmt, MONTHS } from '../lib/utils';
+import { fmt } from '../lib/utils';
 
 const PIE_COLORS = ['#3B82F6','#EF4444','#10B981','#F59E0B','#6366F1','#EC4899','#14B8A6','#F97316'];
 
 export default function Dashboard() {
+  const { t } = useTranslation();
+  const months = t('months', { returnObjects: true });
+
   const [year, setYear]       = useState(2026);
   const [month, setMonth]     = useState(3);
   const [summary, setSummary] = useState([]);
@@ -42,7 +46,6 @@ export default function Dashboard() {
   const kpis = summary.reduce(
     (acc, item) => {
       const prefix = item._id.code.charAt(0);
-      const net = item.totalDebit - item.totalCredit;
       if (prefix === '4') acc.revenue  += item.totalCredit - item.totalDebit;
       if (prefix === '5') acc.expense  += item.totalDebit  - item.totalCredit;
       if (prefix === '1') acc.assets   += item.totalDebit  - item.totalCredit;
@@ -54,7 +57,7 @@ export default function Dashboard() {
   kpis.netIncome = kpis.revenue - kpis.expense;
 
   // Monthly bar chart data
-  const chartData = MONTHS.map(m => ({ month: m, revenue: 0, expense: 0 }));
+  const chartData = months.map(m => ({ month: m, revenue: 0, expense: 0 }));
   monthly.forEach(({ _id, totalDebit, totalCredit }) => {
     const idx = _id.month - 1;
     if (_id.codePrefix === '4') chartData[idx].revenue += totalCredit - totalDebit;
@@ -75,13 +78,13 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500">PUTHAILAND.COM — Financial Overview</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.title')}</h1>
+          <p className="text-sm text-gray-500">{t('dashboard.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <select value={month} onChange={e => setMonth(+e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white">
-            {MONTHS.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
+            {months.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
           </select>
           <select value={year} onChange={e => setYear(+e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white">
@@ -89,24 +92,24 @@ export default function Dashboard() {
           </select>
           <Link to="/ledger"
             className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-            View Ledger →
+            {t('dashboard.viewLedger')}
           </Link>
         </div>
       </div>
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Revenue"     value={kpis.revenue}                       color="green"                            loading={loading} />
-        <KpiCard title="Expenses"    value={kpis.expense}                        color="red"                              loading={loading} />
-        <KpiCard title="Net Income"  value={kpis.netIncome}                      color={kpis.netIncome >= 0 ? 'blue' : 'red'} loading={loading} />
-        <KpiCard title="Total Assets" value={kpis.assets}                        color="purple"                           loading={loading} />
+        <KpiCard title={t('dashboard.revenue')}    value={kpis.revenue}   color="green"                              loading={loading} />
+        <KpiCard title={t('dashboard.expenses')}   value={kpis.expense}   color="red"                                loading={loading} />
+        <KpiCard title={t('dashboard.netIncome')}  value={kpis.netIncome} color={kpis.netIncome >= 0 ? 'blue' : 'red'} loading={loading} />
+        <KpiCard title={t('dashboard.totalAssets')} value={kpis.assets}   color="purple"                             loading={loading} />
       </div>
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Bar chart */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Revenue vs Expenses — {year}</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">{t('dashboard.revenueVsExpenses')} — {year}</h2>
           {activeMonths.length > 0 ? (
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={activeMonths} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
@@ -115,13 +118,13 @@ export default function Dashboard() {
                 <YAxis tick={{ fontSize: 11 }} tickFormatter={v => v >= 1000 ? `${(v/1000).toFixed(0)}K` : v} />
                 <Tooltip formatter={v => [fmt(v), '']} />
                 <Legend />
-                <Bar dataKey="revenue" fill="#10B981" name="Revenue" radius={[4,4,0,0]} />
-                <Bar dataKey="expense" fill="#EF4444" name="Expense" radius={[4,4,0,0]} />
+                <Bar dataKey="revenue" fill="#10B981" name={t('dashboard.revenue')} radius={[4,4,0,0]} />
+                <Bar dataKey="expense" fill="#EF4444" name={t('dashboard.expenses')} radius={[4,4,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
             <div className="flex items-center justify-center h-48 text-gray-400 text-sm">
-              No data — <Link to="/ledger" className="ml-1 text-blue-500">import or add entries</Link>
+              {t('dashboard.noData').split(' — ')[0]} — <Link to="/ledger" className="ml-1 text-blue-500">{t('dashboard.noData').split(' — ')[1] || 'import or add entries'}</Link>
             </div>
           )}
         </div>
@@ -129,7 +132,7 @@ export default function Dashboard() {
         {/* Expense pie */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <h2 className="text-sm font-semibold text-gray-700 mb-3">
-            Expense Breakdown — {MONTHS[month-1]} {year}
+            {t('dashboard.expenseBreakdown')} — {months[month-1]} {year}
           </h2>
           {expPie.length > 0 ? (
             <>
@@ -154,7 +157,7 @@ export default function Dashboard() {
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-center h-40 text-gray-400 text-sm">No data</div>
+            <div className="flex items-center justify-center h-40 text-gray-400 text-sm">{t('dashboard.noExpenseData')}</div>
           )}
         </div>
       </div>
@@ -164,18 +167,18 @@ export default function Dashboard() {
         {/* Top expense accounts */}
         <div className="bg-white rounded-xl border border-gray-200">
           <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-sm font-semibold text-gray-700">Top Expenses — {MONTHS[month-1]} {year}</h2>
+            <h2 className="text-sm font-semibold text-gray-700">{t('dashboard.topExpenses')} — {months[month-1]} {year}</h2>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-xs text-gray-400 border-b border-gray-50">
-                <th className="px-4 py-2 text-left font-medium">Account</th>
-                <th className="px-4 py-2 text-right font-medium">Amount</th>
+                <th className="px-4 py-2 text-left font-medium">{t('dashboard.account')}</th>
+                <th className="px-4 py-2 text-right font-medium">{t('dashboard.amount')}</th>
               </tr>
             </thead>
             <tbody>
               {loading
-                ? <tr><td colSpan={2} className="px-4 py-6 text-center text-gray-400 text-xs">Loading…</td></tr>
+                ? <tr><td colSpan={2} className="px-4 py-6 text-center text-gray-400 text-xs">{t('dashboard.loading')}</td></tr>
                 : summary.filter(s => s._id.code.startsWith('5')).sort((a,b) => (b.totalDebit-b.totalCredit)-(a.totalDebit-a.totalCredit)).slice(0,8).map(s => (
                   <tr key={s._id.code} className="border-b border-gray-50 hover:bg-gray-50">
                     <td className="px-4 py-2.5">
@@ -189,7 +192,7 @@ export default function Dashboard() {
                 ))
               }
               {!loading && summary.filter(s => s._id.code.startsWith('5')).length === 0 && (
-                <tr><td colSpan={2} className="px-4 py-6 text-center text-gray-400 text-xs">No expense data</td></tr>
+                <tr><td colSpan={2} className="px-4 py-6 text-center text-gray-400 text-xs">{t('dashboard.noExpenses')}</td></tr>
               )}
             </tbody>
           </table>
@@ -198,23 +201,23 @@ export default function Dashboard() {
         {/* Recent transactions */}
         <div className="bg-white rounded-xl border border-gray-200">
           <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="text-sm font-semibold text-gray-700">Recent Entries</h2>
-            <Link to="/ledger" className="text-xs text-blue-600 hover:underline">View all →</Link>
+            <h2 className="text-sm font-semibold text-gray-700">{t('dashboard.recentEntries')}</h2>
+            <Link to="/ledger" className="text-xs text-blue-600 hover:underline">{t('dashboard.viewAll')}</Link>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-xs text-gray-400 border-b border-gray-50">
-                <th className="px-4 py-2 text-left font-medium">Date</th>
-                <th className="px-4 py-2 text-left font-medium">Description</th>
-                <th className="px-4 py-2 text-right font-medium">Debit</th>
-                <th className="px-4 py-2 text-right font-medium">Credit</th>
+                <th className="px-4 py-2 text-left font-medium">{t('dashboard.date')}</th>
+                <th className="px-4 py-2 text-left font-medium">{t('dashboard.description')}</th>
+                <th className="px-4 py-2 text-right font-medium">{t('dashboard.debit')}</th>
+                <th className="px-4 py-2 text-right font-medium">{t('dashboard.credit')}</th>
               </tr>
             </thead>
             <tbody>
               {loading
-                ? <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-400 text-xs">Loading…</td></tr>
+                ? <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-400 text-xs">{t('dashboard.loading')}</td></tr>
                 : recent.length === 0
-                  ? <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-400 text-xs">No entries yet</td></tr>
+                  ? <tr><td colSpan={4} className="px-4 py-6 text-center text-gray-400 text-xs">{t('dashboard.noEntries')}</td></tr>
                   : recent.map(e => (
                     <tr key={e._id} className="border-b border-gray-50 hover:bg-gray-50">
                       <td className="px-4 py-2.5 text-gray-500 text-xs whitespace-nowrap">

@@ -1,9 +1,13 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../lib/api';
-import { fmt, MONTHS, JOURNALS } from '../lib/utils';
+import { fmt, JOURNALS } from '../lib/utils';
 
 export default function GeneralLedger() {
+  const { t } = useTranslation();
+  const months = t('months', { returnObjects: true });
+
   const [entries,  setEntries]  = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [total,    setTotal]    = useState(0);
@@ -34,7 +38,6 @@ export default function GeneralLedger() {
 
   const field = (k, v) => setF(prev => ({ ...prev, [k]: v }));
 
-  // Running balance per account within visible rows
   const rows = useMemo(() => {
     const bal = {};
     return entries.map(e => {
@@ -49,7 +52,7 @@ export default function GeneralLedger() {
   [entries]);
 
   async function del(id) {
-    if (!confirm('Delete this entry?')) return;
+    if (!confirm(t('gl.deleteConfirm'))) return;
     await api.delete(`/api/accounting/gl/${id}`);
     fetchEntries(page);
   }
@@ -61,13 +64,13 @@ export default function GeneralLedger() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">General Ledger</h1>
-          <p className="text-sm text-gray-500">{total.toLocaleString()} entries total</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('gl.title')}</h1>
+          <p className="text-sm text-gray-500">{t('gl.entriesTotal', { count: total.toLocaleString() })}</p>
         </div>
         <div className="flex gap-2">
           <Link to="/add-entry"
             className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
-            + Add Entry
+            {t('gl.addEntry')}
           </Link>
         </div>
       </div>
@@ -82,24 +85,24 @@ export default function GeneralLedger() {
 
           <select value={f.month} onChange={e => field('month', e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-            <option value="">All Months</option>
-            {MONTHS.map((m,i) => <option key={i} value={i+1}>{m}</option>)}
+            <option value="">{t('gl.allMonths')}</option>
+            {months.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
           </select>
 
           <select value={f.code} onChange={e => field('code', e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-            <option value="">All Accounts</option>
+            <option value="">{t('gl.allAccounts')}</option>
             {accounts.map(a => <option key={a.code} value={a.code}>{a.code} – {a.name}</option>)}
           </select>
 
           <select value={f.journal} onChange={e => field('journal', e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-            <option value="">All Journals</option>
+            <option value="">{t('gl.allJournals')}</option>
             {JOURNALS.map(j => <option key={j}>{j}</option>)}
           </select>
 
           <input value={f.search} onChange={e => field('search', e.target.value)}
-            placeholder="Search…"
+            placeholder={t('gl.search')}
             className="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
         </div>
       </div>
@@ -110,25 +113,25 @@ export default function GeneralLedger() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr className="text-xs text-gray-500">
-                <th className="px-3 py-3 text-left font-semibold">Date</th>
-                <th className="px-3 py-3 text-left font-semibold">Code</th>
-                <th className="px-3 py-3 text-left font-semibold">Account</th>
-                <th className="px-3 py-3 text-left font-semibold">Journal</th>
-                <th className="px-3 py-3 text-left font-semibold">Voucher</th>
-                <th className="px-3 py-3 text-left font-semibold">Description</th>
-                <th className="px-3 py-3 text-right font-semibold">Debit</th>
-                <th className="px-3 py-3 text-right font-semibold">Credit</th>
-                <th className="px-3 py-3 text-right font-semibold">Balance</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.date')}</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.code')}</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.account')}</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.journal')}</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.voucher')}</th>
+                <th className="px-3 py-3 text-left font-semibold">{t('gl.description')}</th>
+                <th className="px-3 py-3 text-right font-semibold">{t('gl.debit')}</th>
+                <th className="px-3 py-3 text-right font-semibold">{t('gl.credit')}</th>
+                <th className="px-3 py-3 text-right font-semibold">{t('gl.balance')}</th>
                 <th className="px-3 py-3 text-center font-semibold w-12"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {loading ? (
-                <tr><td colSpan={10} className="py-12 text-center text-gray-400">Loading…</td></tr>
+                <tr><td colSpan={10} className="py-12 text-center text-gray-400">{t('gl.loading')}</td></tr>
               ) : rows.length === 0 ? (
                 <tr>
                   <td colSpan={10} className="py-12 text-center text-gray-400">
-                    No entries. <Link to="/add-entry" className="text-blue-600">Add one</Link> to start.
+                    {t('gl.noEntries')} <Link to="/add-entry" className="text-blue-600">{t('gl.addOne')}</Link> {t('gl.toStart')}
                   </td>
                 </tr>
               ) : rows.map(e => (
@@ -160,11 +163,11 @@ export default function GeneralLedger() {
             </tbody>
             <tfoot className="bg-gray-50 border-t-2 border-gray-300">
               <tr className="text-xs font-semibold text-gray-700">
-                <td colSpan={6} className="px-3 py-3">Total — {entries.length} rows shown</td>
+                <td colSpan={6} className="px-3 py-3">{t('gl.totalRows', { count: entries.length })}</td>
                 <td className="px-3 py-3 text-right font-mono text-emerald-700 tabular-nums">{fmt(totals.dr)}</td>
                 <td className="px-3 py-3 text-right font-mono text-rose-600 tabular-nums">{fmt(totals.cr)}</td>
                 <td colSpan={2} className="px-3 py-3 text-right font-mono tabular-nums">
-                  Diff: {fmt(Math.abs(totals.dr - totals.cr))}
+                  {t('gl.diff')} {fmt(Math.abs(totals.dr - totals.cr))}
                 </td>
               </tr>
             </tfoot>
@@ -175,15 +178,15 @@ export default function GeneralLedger() {
       {/* Pagination */}
       {total > LIMIT && (
         <div className="flex items-center justify-between text-sm text-gray-500">
-          <span>Showing {Math.min((page-1)*LIMIT+1,total)}–{Math.min(page*LIMIT,total)} of {total.toLocaleString()}</span>
+          <span>{t('gl.showing', { from: Math.min((page-1)*LIMIT+1,total), to: Math.min(page*LIMIT,total), total: total.toLocaleString() })}</span>
           <div className="flex gap-2">
             <button disabled={page===1} onClick={() => goPage(page-1)}
               className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 disabled:opacity-40">
-              ← Prev
+              {t('gl.prev')}
             </button>
             <button disabled={page*LIMIT>=total} onClick={() => goPage(page+1)}
               className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 disabled:opacity-40">
-              Next →
+              {t('gl.next')}
             </button>
           </div>
         </div>
