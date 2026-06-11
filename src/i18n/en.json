@@ -6,6 +6,7 @@
     "chartOfAccounts": "Chart of Accounts",
     "rawMaterials": "Raw Materials",
     "costOfFG": "Cost of FG",
+    "contact": "Contact Developer",
     "logout": "Logout",
     "accounting": "Accounting"
   },
@@ -150,6 +151,25 @@
     "noMaterials": "No materials. Add one above.",
     "deleteConfirm": "Delete this material?",
     "saveFailed": "Save failed"
+  },
+  "contact": {
+    "title": "Contact Developer",
+    "subtitle": "Report an issue or request a feature",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Brief description of the issue",
+    "descLabel": "Details",
+    "descPlaceholder": "Please describe the issue in detail…",
+    "imageLabel": "Attach Screenshot (optional)",
+    "imageHint": "PNG, JPG, GIF up to 10 MB",
+    "submit": "Send Report",
+    "submitting": "Sending…",
+    "successMsg": "Report sent! We'll look into it.",
+    "errRequired": "Subject and description are required",
+    "historyTitle": "Your Previous Reports",
+    "noReports": "No reports yet.",
+    "statusOpen": "Open",
+    "statusResolved": "Resolved",
+    "removeImage": "Remove"
   },
   "costOfFG": {
     "title": "Cost of Finished Goods",

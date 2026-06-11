@@ -6,6 +6,7 @@
     "chartOfAccounts": "科目表",
     "rawMaterials": "原材料",
     "costOfFG": "成品成本",
+    "contact": "联系开发者",
     "logout": "退出登录",
     "accounting": "财务系统"
   },
@@ -150,6 +151,25 @@
     "noMaterials": "暂无材料，请点击上方添加。",
     "deleteConfirm": "确认删除此材料？",
     "saveFailed": "保存失败"
+  },
+  "contact": {
+    "title": "联系开发者",
+    "subtitle": "报告问题或提交功能请求",
+    "subjectLabel": "主题",
+    "subjectPlaceholder": "简要描述问题",
+    "descLabel": "详细说明",
+    "descPlaceholder": "请详细描述问题…",
+    "imageLabel": "附加截图（可选）",
+    "imageHint": "PNG, JPG, GIF 最大 10 MB",
+    "submit": "发送报告",
+    "submitting": "发送中…",
+    "successMsg": "报告已发送！",
+    "errRequired": "请填写主题和说明",
+    "historyTitle": "历史报告",
+    "noReports": "暂无报告",
+    "statusOpen": "待处理",
+    "statusResolved": "已解决",
+    "removeImage": "删除"
   },
   "costOfFG": {
     "title": "成品成本",

@@ -8,6 +8,7 @@ import AddEntry        from './pages/AddEntry';
 import ChartOfAccounts from './pages/ChartOfAccounts';
 import RawMaterials    from './pages/RawMaterials';
 import CostOfFG        from './pages/CostOfFG';
+import Contact         from './pages/Contact';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="accounts"    element={<ChartOfAccounts />} />
           <Route path="materials"   element={<RawMaterials />}    />
           <Route path="costofFG"    element={<CostOfFG />}        />
+          <Route path="contact"     element={<Contact />}         />
         </Route>
       </Routes>
     </BrowserRouter>

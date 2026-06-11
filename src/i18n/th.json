@@ -6,6 +6,7 @@
     "chartOfAccounts": "ผังบัญชี",
     "rawMaterials": "วัตถุดิบ",
     "costOfFG": "ต้นทุนสินค้า",
+    "contact": "ติดต่อผู้พัฒนา",
     "logout": "ออกจากระบบ",
     "accounting": "ระบบบัญชี"
   },
@@ -150,6 +151,25 @@
     "noMaterials": "ยังไม่มีวัตถุดิบ กดเพิ่มด้านบน",
     "deleteConfirm": "ลบวัตถุดิบนี้?",
     "saveFailed": "บันทึกไม่สำเร็จ"
+  },
+  "contact": {
+    "title": "ติดต่อผู้พัฒนา",
+    "subtitle": "แจ้งปัญหาหรือขอฟีเจอร์เพิ่มเติม",
+    "subjectLabel": "หัวข้อ",
+    "subjectPlaceholder": "อธิบายปัญหาโดยย่อ",
+    "descLabel": "รายละเอียด",
+    "descPlaceholder": "กรุณาอธิบายปัญหาโดยละเอียด…",
+    "imageLabel": "แนบภาพหน้าจอ (ไม่บังคับ)",
+    "imageHint": "PNG, JPG, GIF ไม่เกิน 10 MB",
+    "submit": "ส่งรายงาน",
+    "submitting": "กำลังส่ง…",
+    "successMsg": "ส่งรายงานเรียบร้อยแล้ว!",
+    "errRequired": "กรุณากรอกหัวข้อและรายละเอียด",
+    "historyTitle": "รายงานที่ส่งก่อนหน้า",
+    "noReports": "ยังไม่มีรายงาน",
+    "statusOpen": "รอดำเนินการ",
+    "statusResolved": "แก้ไขแล้ว",
+    "removeImage": "ลบ"
   },
   "costOfFG": {
     "title": "ต้นทุนสินค้าสำเร็จรูป",
