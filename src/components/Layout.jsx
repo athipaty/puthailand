@@ -14,12 +14,11 @@ export default function Layout() {
   const { t, i18n } = useTranslation();
 
   const NAV = [
-    { to: '/',          label: t('nav.dashboard'),       icon: '◼' },
-    { to: '/ledger',    label: t('nav.generalLedger'),    icon: '≡' },
-    { to: '/accounts',  label: t('nav.chartOfAccounts'),  icon: '☰' },
-    { to: '/materials', label: t('nav.rawMaterials'),     icon: '⬡' },
-    { to: '/costofFG',  label: t('nav.costOfFG'),         icon: '⚙' },
-    { to: '/contact',   label: t('nav.contact'),           icon: '✉' },
+    { to: '/',          label: t('nav.dashboard'),      icon: '◼' },
+    { to: '/ledger',    label: t('nav.generalLedger'),   icon: '≡' },
+    { to: '/accounts',  label: t('nav.chartOfAccounts'), icon: '☰' },
+    { to: '/materials', label: t('nav.rawMaterials'),    icon: '⬡' },
+    { to: '/costofFG',  label: t('nav.costOfFG'),        icon: '⚙' },
   ];
 
   function changeLang(code) {
@@ -85,6 +84,19 @@ export default function Layout() {
             ))}
           </div>
           <div className="px-3 text-xs text-slate-500">FY 2026</div>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                isActive
+                  ? 'bg-blue-600 text-white font-medium'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`
+            }
+          >
+            <span className="text-base leading-none">✉</span>
+            <span>{t('nav.contact')}</span>
+          </NavLink>
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
