@@ -45,12 +45,31 @@ export default function Layout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
-          {NAV.map(({ to, label, icon }) => (
+        <nav className="flex-1 px-3 py-4 flex flex-col">
+          <div className="space-y-0.5">
+            {NAV.map(({ to, label, icon }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === '/'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                    isActive
+                      ? 'bg-blue-600 text-white font-medium'
+                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                  }`
+                }
+              >
+                <span className="text-base leading-none">{icon}</span>
+                <span>{label}</span>
+              </NavLink>
+            ))}
+          </div>
+
+          {/* Contact — pinned to bottom of nav */}
+          <div className="mt-auto pt-3 border-t border-slate-700">
             <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
+              to="/contact"
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                   isActive
@@ -59,15 +78,15 @@ export default function Layout() {
                 }`
               }
             >
-              <span className="text-base leading-none">{icon}</span>
-              <span>{label}</span>
+              <span className="text-base leading-none">✉</span>
+              <span>{t('nav.contact')}</span>
             </NavLink>
-          ))}
+          </div>
         </nav>
 
         {/* Footer */}
         <div className="px-3 py-4 border-t border-slate-700 space-y-2">
-          {/* Language switcher */}
+          {/* Language switcher + Contact icon */}
           <div className="flex gap-1 px-1">
             {LANGS.map(({ code, label }) => (
               <button
@@ -82,21 +101,21 @@ export default function Layout() {
                 {label}
               </button>
             ))}
+            <NavLink
+              to="/contact"
+              title={t('nav.contact')}
+              className={({ isActive }) =>
+                `px-2 py-1 rounded text-xs font-semibold transition-colors ${
+                  isActive
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                }`
+              }
+            >
+              ✉
+            </NavLink>
           </div>
           <div className="px-3 text-xs text-slate-500">FY 2026</div>
-          <NavLink
-            to="/contact"
-            className={({ isActive }) =>
-              `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                isActive
-                  ? 'bg-blue-600 text-white font-medium'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-              }`
-            }
-          >
-            <span className="text-base leading-none">✉</span>
-            <span>{t('nav.contact')}</span>
-          </NavLink>
           <button
             onClick={logout}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
