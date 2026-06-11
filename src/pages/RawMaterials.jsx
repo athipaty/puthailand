@@ -57,7 +57,6 @@ export default function RawMaterials() {
   }
 
   async function del(id) {
-    if (!confirm(t('materials.deleteConfirm'))) return;
     await api.delete(`/api/accounting/materials/${id}`);
     setMaterials(m => m.filter(x => x._id !== id));
   }

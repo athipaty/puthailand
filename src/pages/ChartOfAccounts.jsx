@@ -50,7 +50,6 @@ export default function ChartOfAccounts() {
   }
 
   async function del(id) {
-    if (!confirm(t('accounts.deleteConfirm'))) return;
     await api.delete(`/api/accounting/accounts/${id}`);
     setAccounts(a => a.filter(x => x._id !== id));
   }

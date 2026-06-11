@@ -55,7 +55,6 @@ export default function CostOfFG() {
   }
 
   async function del(id) {
-    if (!confirm(t('costOfFG.deleteConfirm'))) return;
     await api.delete(`/api/accounting/fgcost/${id}`);
     setProducts(p => p.filter(x => x._id !== id));
   }
