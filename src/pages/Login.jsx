@@ -39,7 +39,7 @@ export default function Login() {
               onError={e => { e.target.style.display = 'none'; }}
             />
             <div className="mt-4 text-center">
-              <div className="text-white font-bold text-lg tracking-wide">Express Co., Ltd.</div>
+              <div className="text-white font-bold text-lg tracking-wide">PUTHAILAND.COM</div>
               <div className="text-slate-400 text-xs mt-0.5">Accounting System</div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function Login() {
         </div>
 
         <p className="text-center text-slate-500 text-xs mt-6">
-          Express Accounting · FY 2026
+          PUTHAILAND.COM · Accounting · FY 2026
         </p>
       </div>
     </div>

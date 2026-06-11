@@ -25,7 +25,7 @@ export default function Layout() {
             onError={e => { e.target.style.display = 'none'; }}
           />
           <div className="min-w-0">
-            <div className="text-white font-bold text-sm leading-tight truncate">Express Co., Ltd.</div>
+            <div className="text-white font-bold text-sm leading-tight truncate">PUTHAILAND.COM</div>
             <div className="text-slate-400 text-xs">Accounting</div>
           </div>
         </div>
