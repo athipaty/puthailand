@@ -86,7 +86,7 @@ export default function Layout() {
 
         {/* Footer */}
         <div className="px-3 py-4 border-t border-slate-700 space-y-2">
-          {/* Language switcher + Contact icon */}
+          {/* Language switcher */}
           <div className="flex gap-1 px-1">
             {LANGS.map(({ code, label }) => (
               <button
@@ -101,19 +101,6 @@ export default function Layout() {
                 {label}
               </button>
             ))}
-            <NavLink
-              to="/contact"
-              title={t('nav.contact')}
-              className={({ isActive }) =>
-                `px-2 py-1 rounded text-xs font-semibold transition-colors ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                }`
-              }
-            >
-              ✉
-            </NavLink>
           </div>
           <div className="px-3 text-xs text-slate-500">FY 2026</div>
           <button
