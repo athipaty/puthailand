@@ -52,6 +52,7 @@ export default function GeneralLedger() {
   [entries]);
 
   async function del(id) {
+    if (!confirm(t('gl.deleteConfirm'))) return;
     await api.delete(`/api/accounting/gl/${id}`);
     fetchEntries(page);
   }
