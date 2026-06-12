@@ -25,6 +25,7 @@ export default function Layout() {
     { to: '/accounts',  label: t('nav.chartOfAccounts'), icon: '☰' },
     { to: '/materials', label: t('nav.rawMaterials'),    icon: '⬡' },
     { to: '/costofFG',  label: t('nav.costOfFG'),        icon: '⚙' },
+    { to: '/export-declaration', label: t('nav.exportDeclaration'), icon: '📤' },
   ];
 
   function changeLang(code) {
